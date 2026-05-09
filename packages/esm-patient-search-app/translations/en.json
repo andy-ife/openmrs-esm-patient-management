@@ -36,6 +36,8 @@
   "refineSearchHeaderText": "Add additional search criteria",
   "refineSearchTabletBannerText": "Can't find who you're looking for?",
   "resetFields": "Reset fields",
+  "scanBiometrics": "Scan Biometrics",
+  "scanning": "Scanning...",
   "search": "Search",
   "searchForPatient": "Search for a patient by name or identifier number",
   "searchingText": "Searching...",
