@@ -105,6 +105,23 @@ export const configSchema = {
     _default: false,
     _description: 'Whether to include dead patients in search results',
   },
+  biometrics: {
+    enabled: {
+      _type: Type.Boolean,
+      _default: false,
+      _description: 'Whether to enable biometric fingerprint scanning features.',
+    },
+    serverUrl: {
+      _type: Type.String,
+      _default: 'http://127.0.0.1:8081',
+      _description: 'The local URL of the Biometric Spring application.',
+    },
+    identifierTypeUuid: {
+      _type: Type.UUID,
+      _default: '',
+      _description: 'The UUID of the Patient Identifier Type used for saving fingerprint subject IDs.',
+    },
+  },
   contactAttributeType: {
     _type: Type.Array,
     _default: [
@@ -162,4 +179,9 @@ export type PatientSearchConfig = {
   defaultIdentifier: string;
   defaultIdentifierTypes: Array<string>;
   includeDead: boolean;
+  biometrics: {
+    enabled: boolean;
+    serverUrl: string;
+    identifierTypeUuid: string;
+  };
 };

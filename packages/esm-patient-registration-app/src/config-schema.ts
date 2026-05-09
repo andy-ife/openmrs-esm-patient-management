@@ -86,6 +86,11 @@ export interface RegistrationConfig {
     registrationFormUuid: string | null;
   };
   freeTextFieldConceptUuid: string;
+  biometrics: {
+    enabled: boolean;
+    serverUrl: string;
+    identifierTypeUuid: string;
+  };
 }
 
 export const builtInSections: Array<SectionDefinition> = [
@@ -109,6 +114,7 @@ export const builtInFields = [
   'phone',
   'causeOfDeath',
   'dateAndTimeOfDeath',
+  'biometrics',
 ] as const;
 
 export const esmPatientRegistrationSchema = {
@@ -415,6 +421,23 @@ export const esmPatientRegistrationSchema = {
   freeTextFieldConceptUuid: {
     _type: Type.ConceptUuid,
     _default: '5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA',
+  },
+  biometrics: {
+    enabled: {
+      _type: Type.Boolean,
+      _default: false,
+      _description: 'Whether to enable biometric fingerprint scanning features.',
+    },
+    serverUrl: {
+      _type: Type.String,
+      _default: 'http://127.0.0.1:8081',
+      _description: 'The local URL of the Biometric Spring application.',
+    },
+    identifierTypeUuid: {
+      _type: Type.UUID,
+      _default: '',
+      _description: 'The UUID of the Patient Identifier Type used for saving fingerprint subject IDs.',
+    },
   },
   _validators: [
     validator(

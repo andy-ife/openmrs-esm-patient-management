@@ -10,6 +10,7 @@ import { GenderField } from './gender/gender-field.component';
 import { Identifiers } from './id/id-field.component';
 import { NameField } from './name/name-field.component';
 import { PhoneField } from './phone/phone-field.component';
+import { BiometricsField } from './biometrics/biometrics-field.component';
 
 export interface FieldProps {
   name: string;
@@ -47,6 +48,8 @@ export function Field({ name }: FieldProps) {
       return <Identifiers />;
     case 'phone':
       return <PhoneField />;
+    case 'biometrics':
+      return <BiometricsField />;
     default:
       return <CustomField name={name} />;
   }
