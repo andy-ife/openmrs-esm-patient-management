@@ -86,7 +86,7 @@ const PatientSearchBar = React.forwardRef<HTMLInputElement, React.PropsWithChild
         </Button>
         {enabled && (
           <Button
-            kind="ghost"
+            kind="primary"
             size={responsiveSize}
             onClick={handleBiometricSearch}
             disabled={isScanning}

@@ -8,7 +8,13 @@ export interface BiometricStatus {
 }
 
 export interface BiometricScanner {
-  name: string;
+  id?: string;
+  displayName: string;
+  firmwareVersion?: string;
+  brightness?: number;
+  imageDpi?: number;
+  imageHeight?: number;
+  imageWidth?: number;
 }
 
 export interface Fingerprint {
