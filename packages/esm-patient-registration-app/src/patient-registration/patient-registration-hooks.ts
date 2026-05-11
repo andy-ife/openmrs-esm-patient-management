@@ -77,6 +77,7 @@ export function useInitialFormValues(
     telephoneNumber: '',
     yearsEstimated: 0,
     biometricSubjectId: '',
+    scannedFingerprint: null,
   });
 
   useEffect(() => {

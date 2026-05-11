@@ -189,6 +189,7 @@ export interface FormValues {
   telephoneNumber: string;
   yearsEstimated: number;
   biometricSubjectId: string;
+  scannedFingerprint?: any;
 }
 
 export interface PatientUuidMapType {

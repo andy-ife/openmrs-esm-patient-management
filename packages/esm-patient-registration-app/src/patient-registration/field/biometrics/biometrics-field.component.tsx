@@ -12,9 +12,14 @@ export const BiometricsField: React.FC = () => {
   const [scannedFingerprint, setScannedFingerprint] = useState<Fingerprint | null>(null);
   const [isLoadingDevices, setIsLoadingDevices] = useState(false);
   const [isScanning, setIsScanning] = useState(false);
-  const [isEnrolling, setIsEnrolling] = useState(false);
-  const [enrolledSubjectId, setEnrolledSubjectId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Sync Formik value if present
+  useEffect(() => {
+    if (values.scannedFingerprint) {
+      setScannedFingerprint(values.scannedFingerprint);
+    }
+  }, [values.scannedFingerprint]);
 
   useEffect(() => {
     setIsLoadingDevices(true);
@@ -42,6 +47,7 @@ export const BiometricsField: React.FC = () => {
       const result = await scan('1'); // Default position type
       if (result && result.template) {
         setScannedFingerprint(result);
+        setFieldValue('scannedFingerprint', result);
       } else {
         setError(t('biometricsScanFailed', 'Fingerprint scan failed. Please try again.'));
       }
@@ -49,36 +55,6 @@ export const BiometricsField: React.FC = () => {
       setError(t('biometricsScanError', 'Error communicating with biometric device.'));
     } finally {
       setIsScanning(false);
-    }
-  };
-
-  const handleEnrol = async () => {
-    if (!scannedFingerprint) return;
-    setIsEnrolling(true);
-    setError(null);
-    try {
-      const subject = await enrol({ fingerprints: [scannedFingerprint] });
-      if (subject && subject.subjectId) {
-        setEnrolledSubjectId(subject.subjectId);
-
-        if (identifierTypeUuid) {
-          setFieldValue('identifiers', {
-            ...values.identifiers,
-            biometricIdentifier: {
-              identifierTypeUuid,
-              identifierValue: subject.subjectId,
-              preferred: false,
-              autoGeneration: false,
-            },
-          });
-        }
-      } else {
-        setError(t('biometricsEnrolFailed', 'Failed to enrol biometric data.'));
-      }
-    } catch (e) {
-      setError(t('biometricsEnrolError', 'Error communicating with biometric server.'));
-    } finally {
-      setIsEnrolling(false);
     }
   };
 
@@ -109,7 +85,7 @@ export const BiometricsField: React.FC = () => {
         />
       )}
 
-      {enrolledSubjectId || values.biometricSubjectId ? (
+      {values.biometricSubjectId ? (
         <InlineNotification
           kind="success"
           title={t('biometricsEnrolled', 'Biometrics Enrolled')}
@@ -154,10 +130,10 @@ export const BiometricsField: React.FC = () => {
             ) : (
               <Button
                 kind="primary"
-                onClick={handleEnrol}
-                disabled={isEnrolling}
+                onClick={handleScan}
+                disabled={isScanning}
                 style={{ width: '100%', maxWidth: '200px' }}>
-                {isEnrolling ? t('enrolling', 'Enrolling...') : t('enrol', 'Enrol')}
+                {isScanning ? t('scanning', 'Scanning...') : t('scanAgain', 'Scan Again')}
               </Button>
             )}
 

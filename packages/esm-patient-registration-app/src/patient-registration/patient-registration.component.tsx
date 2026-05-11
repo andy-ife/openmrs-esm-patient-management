@@ -23,6 +23,7 @@ import { SectionWrapper } from './section/section-wrapper.component';
 import { type CapturePhotoProps, type FormValues } from './patient-registration.types';
 import { type SavePatientForm, SavePatientTransactionManager } from './form-manager';
 import { useInitialAddressFieldValues, useInitialFormValues, usePatientUuidMap } from './patient-registration-hooks';
+import { useBiometrics } from '../biometrics/useBiometrics';
 import BeforeSavePrompt from './before-save-prompt.component';
 import styles from './patient-registration.scss';
 
@@ -40,6 +41,7 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
   const { search } = useLocation();
   const { isLoading: isLoadingPatientToEdit, patient: patientToEdit } = usePatient(uuidOfPatientToEdit);
   const config = useConfig<RegistrationConfig>();
+  const { enabled: biometricsEnabled, enrol, identifierTypeUuid: biometricsIdentifierTypeUuid } = useBiometrics();
 
   const [initialFormValues, setInitialFormValues] = useInitialFormValues(
     isLoadingPatientToEdit,
@@ -86,7 +88,47 @@ export const PatientRegistration: React.FC<PatientRegistrationProps> = ({ savePa
     const abortController = new AbortController();
     helpers.setSubmitting(true);
 
-    const updatedFormValues = { ...values, identifiers: filterOutUndefinedPatientIdentifiers(values.identifiers) };
+    let updatedFormValues = { ...values, identifiers: filterOutUndefinedPatientIdentifiers(values.identifiers) };
+
+    if (biometricsEnabled && updatedFormValues.scannedFingerprint && !inEditMode) {
+      try {
+        const subject = await enrol({ fingerprints: [updatedFormValues.scannedFingerprint] });
+        if (subject && subject.subjectId && biometricsIdentifierTypeUuid) {
+          updatedFormValues.identifiers = {
+            ...updatedFormValues.identifiers,
+            biometricIdentifier: {
+              identifierTypeUuid: biometricsIdentifierTypeUuid,
+              identifierValue: subject.subjectId,
+              preferred: false,
+              autoGeneration: false,
+              identifierName: 'Biometric Subject ID',
+              initialValue: '',
+              selectedSource: null,
+              required: false,
+            },
+          };
+        } else {
+          showSnackbar({
+            title: t('biometricsEnrolFailed', 'Biometric Enrollment Failed'),
+            subtitle: t(
+              'biometricsEnrolFailedSubtitle',
+              'Failed to enrol biometric data. Proceeding without biometrics.',
+            ),
+            kind: 'warning',
+          });
+        }
+      } catch (e) {
+        showSnackbar({
+          title: t('biometricsEnrolError', 'Biometric Enrollment Error'),
+          subtitle: t(
+            'biometricsEnrolErrorSubtitle',
+            'Error communicating with biometric server. Proceeding without biometrics.',
+          ),
+          kind: 'warning',
+        });
+      }
+    }
+
     try {
       await savePatientForm(
         !inEditMode,
