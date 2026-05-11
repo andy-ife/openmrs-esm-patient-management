@@ -108,7 +108,7 @@ export const configSchema = {
   biometrics: {
     enabled: {
       _type: Type.Boolean,
-      _default: false,
+      _default: true,
       _description: 'Whether to enable biometric fingerprint scanning features.',
     },
     serverUrl: {
@@ -118,7 +118,7 @@ export const configSchema = {
     },
     identifierTypeUuid: {
       _type: Type.UUID,
-      _default: '',
+      _default: '0067a8d5-2f23-47ce-8512-059e27c59e44',
       _description: 'The UUID of the Patient Identifier Type used for saving fingerprint subject IDs.',
     },
   },

@@ -48,7 +48,7 @@ export function Field({ name }: FieldProps) {
       return <Identifiers />;
     case 'phone':
       return <PhoneField />;
-    case 'biometrics':
+    case 'fingerprint':
       return <BiometricsField />;
     default:
       return <CustomField name={name} />;

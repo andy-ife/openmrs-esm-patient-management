@@ -102,6 +102,7 @@ export const builtInSections: Array<SectionDefinition> = [
   { id: 'contact', name: 'Contact Details', fields: ['address', 'phone'] },
   { id: 'death', name: 'Death Info', fields: ['dateAndTimeOfDeath', 'causeOfDeath'] },
   { id: 'relationships', name: 'Relationships', fields: [] },
+  { id: 'biometrics', name: 'Biometrics', fields: ['fingerprint'] },
 ];
 
 // These fields are handled specially in field.component.tsx
@@ -114,13 +115,13 @@ export const builtInFields = [
   'phone',
   'causeOfDeath',
   'dateAndTimeOfDeath',
-  'biometrics',
+  'fingerprint',
 ] as const;
 
 export const esmPatientRegistrationSchema = {
   sections: {
     _type: Type.Array,
-    _default: ['demographics', 'contact', 'relationships'],
+    _default: ['demographics', 'contact', 'relationships', 'biometrics'],
     _description: `An array of strings which are the keys from 'sectionDefinitions' or any of the following built-in sections: '${builtInSections
       .map((s) => s.id)
       .join("', '")}'.`,
@@ -425,7 +426,7 @@ export const esmPatientRegistrationSchema = {
   biometrics: {
     enabled: {
       _type: Type.Boolean,
-      _default: false,
+      _default: true,
       _description: 'Whether to enable biometric fingerprint scanning features.',
     },
     serverUrl: {
@@ -435,7 +436,7 @@ export const esmPatientRegistrationSchema = {
     },
     identifierTypeUuid: {
       _type: Type.UUID,
-      _default: '',
+      _default: '0067a8d5-2f23-47ce-8512-059e27c59e44',
       _description: 'The UUID of the Patient Identifier Type used for saving fingerprint subject IDs.',
     },
   },
