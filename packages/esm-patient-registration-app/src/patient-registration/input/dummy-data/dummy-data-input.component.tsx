@@ -40,6 +40,7 @@ export const dummyFormValues: FormValues = {
     postalCode: '50030-310',
   },
   identifiers: {},
+  biometricSubjectId: '',
 };
 
 export const DummyDataInput: React.FC<DummyDataInputProps> = ({ setValues }) => {

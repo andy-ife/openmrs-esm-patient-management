@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Button, InlineNotification, SkeletonText } from '@carbon/react';
 import { useTranslation } from 'react-i18next';
-import { useBiometrics, type Fingerprint } from '../../biometrics/useBiometrics';
+import { useBiometrics, type Fingerprint } from '../../../biometrics/useBiometrics';
 import { usePatientRegistrationContext } from '../../patient-registration-context';
 import styles from '../field.scss';
 

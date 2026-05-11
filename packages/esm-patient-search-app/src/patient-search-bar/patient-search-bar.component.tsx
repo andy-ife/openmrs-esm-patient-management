@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Search } from '@carbon/react';
-import { useBiometrics } from '../../biometrics/useBiometrics';
+import { useBiometrics } from '../biometrics/useBiometrics';
 import styles from './patient-search-bar.scss';
 
 interface PatientSearchBarProps {

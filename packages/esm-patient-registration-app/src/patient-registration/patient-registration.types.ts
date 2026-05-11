@@ -188,6 +188,7 @@ export interface FormValues {
   relationships: Array<RelationshipValue>;
   telephoneNumber: string;
   yearsEstimated: number;
+  biometricSubjectId: string;
 }
 
 export interface PatientUuidMapType {

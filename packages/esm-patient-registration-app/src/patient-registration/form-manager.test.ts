@@ -56,6 +56,7 @@ const formValues: FormValues = {
       },
     },
   },
+  biometricSubjectId: 'someId',
 };
 
 describe('FormManager', () => {

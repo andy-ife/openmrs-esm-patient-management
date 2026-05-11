@@ -76,6 +76,7 @@ export function useInitialFormValues(
     relationships: [],
     telephoneNumber: '',
     yearsEstimated: 0,
+    biometricSubjectId: '',
   });
 
   useEffect(() => {
