@@ -436,7 +436,7 @@ export const esmPatientRegistrationSchema = {
     },
     identifierTypeUuid: {
       _type: Type.UUID,
-      _default: '0067a8d5-2f23-47ce-8512-059e27c59e44',
+      _default: '0067a8d5-2f23-47ce-8512-059e27c59e44', // this uuid was set in openmrs admin UI
       _description: 'The UUID of the Patient Identifier Type used for saving fingerprint subject IDs.',
     },
   },

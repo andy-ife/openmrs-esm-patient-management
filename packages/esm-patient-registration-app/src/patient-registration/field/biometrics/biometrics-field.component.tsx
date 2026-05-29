@@ -5,6 +5,15 @@ import { useBiometrics, type Fingerprint } from '../../../biometrics/useBiometri
 import { usePatientRegistrationContext } from '../../patient-registration-context';
 import styles from '../field.scss';
 
+const getImageMimeType = (base64Str: string) => {
+  if (base64Str.startsWith('SUkq') || base64Str.startsWith('TU0A')) {
+    return 'image/tif';
+  } else if (base64Str.startsWith('/9j/')) {
+    return 'image/jpeg';
+  }
+  return 'image/png';
+};
+
 export const BiometricsField: React.FC = () => {
   const { t } = useTranslation();
   const { enabled, status, devices, fetchStatus, fetchDevices, scan, enrol, identifierTypeUuid } = useBiometrics();
@@ -112,7 +121,7 @@ export const BiometricsField: React.FC = () => {
               }}>
               {scannedFingerprint?.image ? (
                 <img
-                  src={`data:image/png;base64,${scannedFingerprint.image}`}
+                  src={`data:${getImageMimeType(scannedFingerprint.image)};charset=utf-8;base64,${scannedFingerprint.image}`}
                   alt="Fingerprint"
                   style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'contain' }}
                 />
